@@ -7,5 +7,7 @@ An app for planning outtings for groups of friends
 1. `yarn dev`
 
 ## TODO
-- [ ] Add Auth0 integration
+- [x] Add Auth0 integration
 - [ ] Integrate with a database
+- [ ] Add additional + optional fields
+- [ ] Improve the rendering of the itinerary/standardize format
