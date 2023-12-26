@@ -1,11 +1,22 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import {
+  Button,
+  Input,
+  Spacer,
+  Progress,
+  Card,
+  CardBody,
+  Textarea,
+} from '@nextui-org/react'
 
 export default function Home() {
+  const [loadingAnswer, setLoadingAnswer] = useState(false)
   const [itinerary, setItinerary] = useState(null)
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    setLoadingAnswer(true)
     event.preventDefault()
  
     const formData = new FormData(event.currentTarget)
@@ -17,25 +28,38 @@ export default function Home() {
     // Handle response if necessary
     const data = await response.json()
     setItinerary(data.itinerary)
+    setLoadingAnswer(false)
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <form onSubmit={onSubmit}>
-          <input type="number" placeholder="Group Size" name="group-size"/>
-          <input type="text" placeholder="Location" name="location"/>
-          <input type="textarea" placeholder="Interests" name="interests"/>
-          <button type="submit">Submit</button>
+      <div className="z-10 max-w-5xl w-full">
+        <form onSubmit={onSubmit} className="max-w-4xl">
+          <h1>PlanTogether</h1>
+          <Input type="number" placeholder="count" label="Group Size" name="group-size" />
+          <Spacer />
+          <Input type="text" placeholder="city" label="Location" name="location" />
+          <Spacer />
+          <Textarea placeholder="list" label="Interests" name="interests" />
+          <Spacer />
+          <Button color="primary" type="submit" size="lg">Submit</Button>
         </form>
-
-        <div className="itinerary">
-          {itinerary && (
+        <Spacer y={5} />
+        <Card className="itinerary bg-background/60" isBlurred>
+          <CardBody>
+            {loadingAnswer && (
+              <Progress color="primary" isIndeterminate />
+            )}
             <p>
-              {itinerary}
+              {!!itinerary && (
+                <>{itinerary}</>
+              )}
+              {!itinerary && !loadingAnswer && (
+                <i>fill out form to get started</i>
+              )}
             </p>
-          )}
-        </div>
+          </CardBody>
+        </Card>
       </div>
     </main>
   )
