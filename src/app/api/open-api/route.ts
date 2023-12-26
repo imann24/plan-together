@@ -2,9 +2,15 @@ import OpenAI from 'openai'
 
 export const dynamic = 'force-dynamic' // defaults to auto
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-})
+let openai: OpenAI
+if (process.env.OPENAI_API_KEY) {
+    openai =new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    })
+} else {
+    console.warn('OPENAI_API_KEY not set. skipping initialization.')
+}
+
 
 const formatPrompt = (groupSize: number, location: string, interests: string): string => {
     return `
@@ -17,6 +23,10 @@ const formatPrompt = (groupSize: number, location: string, interests: string): s
 }
 
 export async function POST(req: Request) {
+    if (!openai) {
+        return Response.json({ error: 'OpenAI not initialized' })
+    }
+    
     const body = await req.formData()
     
     let groupSize = 1
@@ -30,7 +40,11 @@ export async function POST(req: Request) {
         model: 'gpt-4',
         messages: [{ 
             role: 'user', 
-            content: formatPrompt(groupSize, location, interests)
+            content: formatPrompt(
+                groupSize,
+                location as string,
+                interests as string,
+            )
         }],
         stream: true,
     })
