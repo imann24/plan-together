@@ -1,5 +1,6 @@
 'use client'
 
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { FormEvent, useState } from 'react'
 import {
   Button,
@@ -12,7 +13,7 @@ import {
   Textarea,
 } from '@nextui-org/react'
 
-export default function Home() {
+export default withPageAuthRequired(function Home() {
   const [loadingAnswer, setLoadingAnswer] = useState(false)
   const [itinerary, setItinerary] = useState(null)
 
@@ -68,4 +69,4 @@ export default function Home() {
       </div>
     </main>
   )
-}
+})
