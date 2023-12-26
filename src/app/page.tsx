@@ -8,6 +8,7 @@ import {
   Progress,
   Card,
   CardBody,
+  CardHeader,
   Textarea,
 } from '@nextui-org/react'
 
@@ -35,7 +36,8 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full">
         <form onSubmit={onSubmit} className="max-w-4xl">
-          <h1>PlanTogether</h1>
+          <h1 className="text-lg">PlanTogether</h1>
+          <Spacer y={2} />
           <Input type="number" placeholder="count" label="Group Size" name="group-size" />
           <Spacer />
           <Input type="text" placeholder="city" label="Location" name="location" />
@@ -45,7 +47,10 @@ export default function Home() {
           <Button color="primary" type="submit" size="lg">Submit</Button>
         </form>
         <Spacer y={5} />
-        <Card className="itinerary bg-background/60" isBlurred>
+        <Card className="itinerary" isBlurred>
+          <CardHeader>
+            <h2 className="font-bold text-large">Itinerary</h2>
+          </CardHeader>
           <CardBody>
             {loadingAnswer && (
               <Progress color="primary" isIndeterminate />
