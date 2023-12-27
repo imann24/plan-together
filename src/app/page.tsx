@@ -12,17 +12,18 @@ import {
   CardHeader,
   Textarea,
 } from '@nextui-org/react'
+import { type Itinerary } from '@/app/types'
 
 export default withPageAuthRequired(function Home() {
   const [loadingAnswer, setLoadingAnswer] = useState(false)
-  const [itinerary, setItinerary] = useState(null)
+  const [itinerary, setItinerary] = useState<Itinerary | null>(null)
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     setLoadingAnswer(true)
     event.preventDefault()
  
     const formData = new FormData(event.currentTarget)
-    const response = await fetch('/api/open-api', {
+    const response = await fetch('/api/open-ai', {
       method: 'POST',
       body: formData,
     })
@@ -43,7 +44,7 @@ export default withPageAuthRequired(function Home() {
           <Spacer />
           <Input type="text" placeholder="city" label="Location" name="location" />
           <Spacer />
-          <Textarea placeholder="list" label="Interests" name="interests" />
+          <Textarea placeholder="list" label="Interests" aria-label="Interests" name="interests" />
           <Spacer />
           <Button color="primary" type="submit" size="lg">Submit</Button>
         </form>
@@ -56,14 +57,20 @@ export default withPageAuthRequired(function Home() {
             {loadingAnswer && (
               <Progress color="primary" isIndeterminate />
             )}
-            <p>
+            <div>
               {!!itinerary && (
-                <>{itinerary}</>
+                <ul>
+                  <li><b>Where:</b> {itinerary.place}</li>
+                  <Spacer />
+                  <li><b>When:</b> {itinerary.time}</li>
+                  <Spacer />
+                  <li><b>Details:</b> {itinerary.details}</li>
+                </ul>
               )}
               {!itinerary && !loadingAnswer && (
                 <i>fill out form to get started</i>
               )}
-            </p>
+            </div>
           </CardBody>
         </Card>
       </div>

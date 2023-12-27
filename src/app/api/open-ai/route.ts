@@ -15,7 +15,12 @@ if (process.env.OPENAI_API_KEY) {
 
 const formatPrompt = (groupSize: number, location: string, interests: string): string => {
     return `
-    Please plan an event given the following parameters:
+    Please plan an event given the following parameters and respond in the form a JSON object:
+    {
+        place,
+        time,
+        details,
+    }
 
         Group size: ${groupSize}
         Location: ${location}
@@ -42,8 +47,10 @@ export async function POST(req: Request) {
     const location = body.get('location')
     const interests = body.get('interests')
 
-    const stream = await openai.chat.completions.create({
-        model: 'gpt-4',
+    const answer = await openai.chat.completions.create({
+        // use 3.5 because it supports json_object response format
+        model: 'gpt-3.5-turbo-1106',
+        response_format: { type: 'json_object' },
         messages: [{ 
             role: 'user', 
             content: formatPrompt(
@@ -52,17 +59,9 @@ export async function POST(req: Request) {
                 interests as string,
             )
         }],
-        stream: true,
     })
 
-    const message = []
-    for await (const chunk of stream) {
-        const content = chunk.choices[0].delta.content
-        // skip quote marks:
-        if (content !== '"') {
-            message.push(content)
-        }
-    }
-
-    return Response.json({ itinerary: message.join('') })
+    return Response.json({ 
+        itinerary: JSON.parse(answer.choices[0].message.content as string) 
+    })
 }
