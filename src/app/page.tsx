@@ -12,7 +12,9 @@ import {
   CardHeader,
   Textarea,
 } from '@nextui-org/react'
+import { createEvent } from 'ics'
 import { type Itinerary } from '@/app/types'
+import { convertTimeToICSTimestamp } from '@/app/lib/time'
 
 export default withPageAuthRequired(function Home() {
   const [loadingAnswer, setLoadingAnswer] = useState(false)
@@ -32,6 +34,34 @@ export default withPageAuthRequired(function Home() {
     const data = await response.json()
     setItinerary(data.itinerary)
     setLoadingAnswer(false)
+  }
+
+  function downloadEvent(itinerary: Itinerary) {
+    const event = createEvent({
+      title: itinerary.eventName,
+      description: itinerary.details,
+      location: itinerary.place,
+      start: convertTimeToICSTimestamp(itinerary.startTime),
+      end: convertTimeToICSTimestamp(itinerary.endTime),
+    })
+    if (event.value) {
+      // create file for download
+      const blob = new Blob([event.value], { type: 'text/calendar' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'event.ics')
+      document.body.appendChild(link)
+
+      // trigger download:
+      link.click()
+
+      // clean up:
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } else {
+      alert('unable to download event')
+    }
   }
 
   return (
@@ -59,13 +89,26 @@ export default withPageAuthRequired(function Home() {
             )}
             <div>
               {!!itinerary && (
-                <ul>
-                  <li><b>Where:</b> {itinerary.place}</li>
-                  <Spacer />
-                  <li><b>When:</b> {itinerary.time}</li>
-                  <Spacer />
-                  <li><b>Details:</b> {itinerary.details}</li>
-                </ul>
+                <>
+                  <ul>
+                    <li><b>What:</b> {itinerary.eventName}</li>
+                    <li><b>Where:</b> {itinerary.place}</li>
+                    <Spacer />
+                    <li>
+                      <b>When:</b>
+                      {' '}
+                      {itinerary.startTime}
+                      {'-'}
+                      {itinerary.endTime}
+                    </li>
+                    <Spacer />
+                    <li><b>Details:</b> {itinerary.details}</li>
+                  </ul>
+                  <Spacer y={4} />
+                  <Button color='secondary' onClick={() => downloadEvent(itinerary)}>
+                    Download Event
+                  </Button>
+                </>
               )}
               {!itinerary && !loadingAnswer && (
                 <i>fill out form to get started</i>

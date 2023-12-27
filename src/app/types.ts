@@ -1,5 +1,7 @@
 export type Itinerary = {
+    eventName: string,
     place: string,
-    time: string,
+    startTime: string,
+    endTime: string,
     details: string,
 }

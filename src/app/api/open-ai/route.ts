@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { getSession } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0'
 
 export const dynamic = 'force-dynamic' // defaults to auto
 
@@ -15,13 +15,17 @@ if (process.env.OPENAI_API_KEY) {
 
 const formatPrompt = (groupSize: number, location: string, interests: string): string => {
     return `
-    Please plan an event given the following parameters and respond in the form a JSON object:
+    Please plan an event and respond in the form a JSON object.
+    'place' should be real life business/location:
     {
+        eventName,
         place,
-        time,
+        startTime: 12-hour time,
+        endTime: 12-hour time,
         details,
     }
 
+    Use the following parameters:
         Group size: ${groupSize}
         Location: ${location}
         Interests: ${interests}
