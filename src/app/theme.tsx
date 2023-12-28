@@ -1,16 +1,24 @@
 'use client'
 
-import React from 'react'
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import React, { useEffect, useState } from 'react'
+import { ThemeProvider } from 'next-themes'
 
 type ThemeClientProps = {
     children: React.ReactNode
 }
 
 export default function ThemeClient({ children }: ThemeClientProps) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return <>{children}</>
+
     return (
-        <NextThemesProvider attribute="class" defaultTheme="light">
+        <ThemeProvider attribute="class" defaultTheme="light">
             {children}
-        </NextThemesProvider>
+        </ThemeProvider>
     )
 }

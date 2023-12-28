@@ -17,7 +17,7 @@ An app for planning outtings for groups of friends
 - [x] Parse timestamps returned by database to human readable strings
 - [x] Add share event with public link
 - [ ] on `/saved` page, pull down existing share links and replace `Share` button with an `Open` button
-- [ ] Add social media links to share link page
+- [x] Add social media links to share link page
 - [ ] Improve GPT prompt and format to support multiple events in a single itinerary
 - [ ] Export to Google Calendar
 - [ ] Cache responses
@@ -33,5 +33,5 @@ An app for planning outtings for groups of friends
     - [ ] Follow-up prompts to GPT
 - [ ] Add a delete Saved event button
 - [x] Hide the navbar under the `/share/<share_slug>` path
-- [x] Add social media preview metadata to `/share/<share_slug>` path
+- [ ] Add social media preview metadata to `/share/<share_slug>` path
 - [ ] Add a button to sign in and create events on `/share/<share_slug>` path
