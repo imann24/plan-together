@@ -15,14 +15,15 @@ if (process.env.OPENAI_API_KEY) {
 
 const formatPrompt = (groupSize: number, location: string, interests: string): string => {
     return `
-    Please plan an event and respond in the form a JSON object.
-    'place' should be real life business/location:
+    Please plan a day of activities for a group and respond in the form a JSON object.
+    'place' should be the starting real life business/location.
+    The JSON object should be single entry that summarizes the entire day with the following format:
     {
         eventName,
-        place,
+        place: the starting location,
         startTime: 12-hour time,
         endTime: 12-hour time,
-        details,
+        details: description of activities, locations, and timing,
     }
 
     Use the following parameters:
