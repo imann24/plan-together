@@ -35,3 +35,5 @@ An app for planning outtings for groups of friends
 - [x] Hide the navbar under the `/share/<share_slug>` path
 - [ ] Add social media preview metadata to `/share/<share_slug>` path
 - [ ] Add a button to sign in and create events on `/share/<share_slug>` path
+- [ ] Save input configurations to regenerate further ideas
+- [ ] Integrate with `react-add-to-calendar` https://www.npmjs.com/package/add-to-calendar-button-react

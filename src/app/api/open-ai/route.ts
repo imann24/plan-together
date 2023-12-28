@@ -23,10 +23,10 @@ const formatPrompt = (groupSize: number, location: string, interests: string): s
         place: the starting location,
         startTime: 12-hour time,
         endTime: 12-hour time,
-        details: description of activities, locations, and timing,
+        details: description of activities, real life locations, and timing,
     }
 
-    Use the following parameters:
+    Use the following parameters to plan the day:
         Group size: ${groupSize}
         Location: ${location}
         Interests: ${interests}
