@@ -20,3 +20,9 @@ export function convertTimeToICSTimestamp(time: string): string {
 export function convertToDatabaseTimestamp(time: string): string {
     return getDate(time).toSQL() as string
 }
+
+export function convertToDisplayTimeRange(start: string, end: string): string {
+    const startObj = DateTime.fromISO(start)
+    const endObj = DateTime.fromISO(end)
+    return `${startObj.toLocaleString()}, ${startObj.toLocaleString(DateTime.TIME_SIMPLE)}-${endObj.toLocaleString(DateTime.TIME_SIMPLE)}`
+}

@@ -6,6 +6,7 @@ import {
 } from '@nextui-org/react'
 import { SupabaseItinerary } from '@/app/types'
 import { GET } from '@/app/api/supabase/events/route'
+import { convertToDisplayTimeRange } from '@/app/lib/time'
 
 // page must always be dynamically rendered because it fetches user-specific data
 export const dynamic = 'force-dynamic'
@@ -28,7 +29,7 @@ export default async function SavedEvents() {
                         <CardBody>
                             <p><b>Where:</b> {evt.location}</p>
                             <Spacer y={1} />
-                            <p><b>When:</b> {evt.start}-{evt.end}</p>
+                            <p><b>When:</b> {convertToDisplayTimeRange(evt.start, evt.end)}</p>
                             <Spacer y={1} />
                             <p><b>Details:</b> {evt.description}</p>
                             <Spacer y={2} />
