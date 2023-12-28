@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 
-export function convertTimeToICSTimestamp(time: string): string {
-    const [hour, minute, period] = time.split(/:| /)
+function getDate(time: string): DateTime {
+    const [hour, minutes, period] = time.split(/:| /)
     let hour24 = parseInt(hour, 10)
     
     if (period === 'PM' && hour24 !== 12) {
@@ -9,9 +9,14 @@ export function convertTimeToICSTimestamp(time: string): string {
     } else if (period === 'AM' && hour24 === 12) {
         hour24 = 0
     }
-    
-    const date = DateTime.fromISO(`${hour24}:${minute}`)
-    
+    return DateTime.fromISO(`${hour24}:${minutes}`)
+}
+
+export function convertTimeToICSTimestamp(time: string): string {
     // YYYYMMDDTHHmmss
-    return date.toFormat('yyyyMMdd\'T\'HHmmss')
+    return getDate(time).toFormat('yyyyMMdd\'T\'HHmmss')
+}
+
+export function convertToDatabaseTimestamp(time: string): string {
+    return getDate(time).toSQL() as string
 }

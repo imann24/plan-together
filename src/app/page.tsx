@@ -1,9 +1,11 @@
 'use client'
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import Image from 'next/image'
 import { FormEvent, useState } from 'react'
 import {
   Button,
+  ButtonGroup,
   Input,
   Spacer,
   Progress,
@@ -18,9 +20,11 @@ import { convertTimeToICSTimestamp } from '@/app/lib/time'
 
 export default withPageAuthRequired(function Home() {
   const [loadingAnswer, setLoadingAnswer] = useState(false)
+  const [eventSaved, setEventSaved] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    setItinerary(null)
     setLoadingAnswer(true)
     event.preventDefault()
  
@@ -34,6 +38,17 @@ export default withPageAuthRequired(function Home() {
     const data = await response.json()
     setItinerary(data.itinerary)
     setLoadingAnswer(false)
+    setEventSaved(false)
+  }
+
+  async function onSave(itinerary: Itinerary): Promise<void> {
+    const response = await fetch('/api/supabase/events', {
+      method: 'POST',
+      body: JSON.stringify(itinerary),
+    })
+    const data = await response.json()
+    // disables the Save button
+    setEventSaved(data.saved)
   }
 
   function downloadEvent(itinerary: Itinerary) {
@@ -68,7 +83,11 @@ export default withPageAuthRequired(function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full">
         <form onSubmit={onSubmit} className="max-w-4xl">
-          <h1 className="text-lg">PlanTogether</h1>
+          <h1>
+            <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />
+            {' '}
+            PlanTogether
+          </h1>
           <Spacer y={2} />
           <Input type="number" placeholder="count" label="Group Size" name="group-size" />
           <Spacer />
@@ -105,9 +124,18 @@ export default withPageAuthRequired(function Home() {
                     <li><b>Details:</b> {itinerary.details}</li>
                   </ul>
                   <Spacer y={4} />
-                  <Button color='secondary' onClick={() => downloadEvent(itinerary)}>
-                    Download Event
-                  </Button>
+                  <ButtonGroup>
+                    <Button color="secondary" onClick={() => downloadEvent(itinerary)}>
+                      Download Event
+                    </Button>
+                    <Button 
+                      color="secondary" 
+                      onClick={() => onSave(itinerary)} 
+                      isDisabled={eventSaved}
+                    >
+                      Save Event
+                    </Button>
+                  </ButtonGroup>
                 </>
               )}
               {!itinerary && !loadingAnswer && (

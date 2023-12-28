@@ -9,7 +9,7 @@ if (process.env.OPENAI_API_KEY) {
         apiKey: process.env.OPENAI_API_KEY,
     })
 } else {
-    console.warn('OPENAI_API_KEY not set. skipping initialization.')
+    console.warn('openai-api', 'OPENAI_API_KEY not set. skipping initialization.')
 }
 
 

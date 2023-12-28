@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import ThemeClient from './theme'
 import './globals.css'
 import ThemeSwitcher from './components/ThemeSwitcher'
+import NavBar from './components/NavBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <UserProvider>
         <ThemeClient>
           <body className={inter.className}>
+            <NavBar />
             <ThemeSwitcher />
             {children}
           </body>

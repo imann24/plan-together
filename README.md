@@ -10,9 +10,13 @@ An app for planning outtings for groups of friends
 - [x] Add Auth0 integration
 - [x] Add download event
 - [x] Implement dark/light mode toggle
+- [x] Add save event to database
+- [ ] Parse timestamps returned by database to human readable strings
+- [ ] Add share event with public link
+- [ ] Improve GPT prompt and format to support multiple events in a single itinerary
 - [ ] Export to Google Calendar
 - [ ] Cache responses
-- [ ] Integrate with a database
+- [x] Integrate with a database
 - [ ] Add additional + optional fields
 - [ ] Improve the rendering of the itinerary/standardize format
 - [ ] Support Setting an event date

@@ -17,7 +17,7 @@ export default function ThemeSwitcher () {
     return (
         <Switch
             isSelected={theme === 'dark'}
-            className="fixed right-4 top-4"
+            className="fixed right-4 top-4 z-10"
             onChange={evt => setTheme(evt.target.checked ? 'dark' : 'light')}
             size="md"
             color="secondary"
