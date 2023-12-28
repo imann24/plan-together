@@ -1,15 +1,17 @@
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import ThemeClient from './theme'
 import './globals.css'
-import ThemeSwitcher from './components/ThemeSwitcher'
-import NavBar from './components/NavBar'
+import ThemeSwitcher from '@/lib/components/ThemeSwitcher'
+import NavBar from '@/lib/components/NavBar'
 
 const inter = Inter({ subsets: ['latin'] })
+const appName = 'PlanTogether'
 
 export const metadata: Metadata = {
-  title: 'PlanTogether',
+  title: appName,
   description: 'An app for making group plans',
 }
 
@@ -25,6 +27,11 @@ export default function RootLayout({
           <body className={inter.className}>
             <NavBar />
             <ThemeSwitcher />
+            <h1>
+              <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />
+              {' '}
+              {appName}
+            </h1>
             {children}
           </body>
         </ThemeClient>

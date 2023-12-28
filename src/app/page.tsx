@@ -1,7 +1,5 @@
 'use client'
 
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import Image from 'next/image'
 import { FormEvent, useState } from 'react'
 import {
   Button,
@@ -14,11 +12,10 @@ import {
   CardHeader,
   Textarea,
 } from '@nextui-org/react'
-import { createEvent } from 'ics'
-import { type Itinerary } from '@/app/types'
-import { convertTimeToICSTimestamp } from '@/app/lib/time'
+import { type Itinerary } from '@/lib/types'
+import { initializeEventDownload } from '@/lib/calendar'
 
-export default withPageAuthRequired(function Home() {
+export default function Home() {
   const [loadingAnswer, setLoadingAnswer] = useState(false)
   const [eventSaved, setEventSaved] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
@@ -52,42 +49,13 @@ export default withPageAuthRequired(function Home() {
   }
 
   function downloadEvent(itinerary: Itinerary) {
-    const event = createEvent({
-      title: itinerary.eventName,
-      description: itinerary.details,
-      location: itinerary.place,
-      start: convertTimeToICSTimestamp(itinerary.startTime),
-      end: convertTimeToICSTimestamp(itinerary.endTime),
-    })
-    if (event.value) {
-      // create file for download
-      const blob = new Blob([event.value], { type: 'text/calendar' })
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', 'event.ics')
-      document.body.appendChild(link)
-
-      // trigger download:
-      link.click()
-
-      // clean up:
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
-    } else {
-      alert('unable to download event')
-    }
+    initializeEventDownload(itinerary)
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 max-w-5xl w-full">
         <form onSubmit={onSubmit} className="max-w-4xl">
-          <h1>
-            <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />
-            {' '}
-            PlanTogether
-          </h1>
           <Spacer y={2} />
           <Input type="number" placeholder="count" label="Group Size" name="group-size" />
           <Spacer />
@@ -147,4 +115,4 @@ export default withPageAuthRequired(function Home() {
       </div>
     </main>
   )
-})
+}

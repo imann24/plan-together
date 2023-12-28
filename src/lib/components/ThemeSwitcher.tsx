@@ -17,7 +17,9 @@ export default function ThemeSwitcher () {
     return (
         <Switch
             isSelected={theme === 'dark'}
-            className="fixed right-4 top-4 z-10"
+            className="fixed z-20"
+            // hack to make the switch appear on top of the navbar, Tailwind styling wasn't working:
+            style={{ top: '1rem', right: '1rem' }}
             onChange={evt => setTheme(evt.target.checked ? 'dark' : 'light')}
             size="md"
             color="secondary"

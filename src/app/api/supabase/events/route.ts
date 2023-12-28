@@ -1,7 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { getSession } from '@auth0/nextjs-auth0'
-import { Itinerary } from '@/app/types'
-import { convertToDatabaseTimestamp } from '@/app/lib/time'
+import { Itinerary } from '@/lib/types'
+import { convertToDatabaseTimestamp } from '@/lib/time'
 
 export const dynamic = 'force-dynamic'
 

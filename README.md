@@ -29,3 +29,4 @@ An app for planning outtings for groups of friends
 - [ ] Allow for revisions to events
     - [ ] Manual
     - [ ] Follow-up prompts to GPT
+- [ ] Add a delete Saved event button

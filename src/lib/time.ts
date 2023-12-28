@@ -1,6 +1,13 @@
 import { DateTime } from 'luxon'
 
 function getDate(time: string): DateTime {
+    // when parsing from DB entry, it will already be in ISO format
+    const tryIso = DateTime.fromISO(time)
+    if (tryIso.isValid) {
+        return tryIso
+    }
+
+    // when parsing from ChatGPT output, it will be in 12-hour format
     const [hour, minutes, period] = time.split(/:| /)
     let hour24 = parseInt(hour, 10)
     
@@ -9,6 +16,7 @@ function getDate(time: string): DateTime {
     } else if (period === 'AM' && hour24 === 12) {
         hour24 = 0
     }
+
     return DateTime.fromISO(`${hour24}:${minutes}`)
 }
 

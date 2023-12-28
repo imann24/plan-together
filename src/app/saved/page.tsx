@@ -1,12 +1,15 @@
+import React from 'react'
 import { 
     Card,
     CardBody,
     CardHeader,
     Spacer,
 } from '@nextui-org/react'
-import { SupabaseItinerary } from '@/app/types'
+// import dynamic from 'next/dynamic'
+import { SupabaseItinerary } from '@/lib/types'
 import { GET } from '@/app/api/supabase/events/route'
-import { convertToDisplayTimeRange } from '@/app/lib/time'
+import { convertToDisplayTimeRange } from '@/lib/time'
+import SavedEventButtons from '@/lib/components/SavedEventButtons'
 
 // page must always be dynamically rendered because it fetches user-specific data
 export const dynamic = 'force-dynamic'
@@ -33,6 +36,7 @@ export default async function SavedEvents() {
                             <Spacer y={1} />
                             <p><b>Details:</b> {evt.description}</p>
                             <Spacer y={2} />
+                            <SavedEventButtons event={evt} />
                         </CardBody>
                     </Card>
                     <Spacer y={5} />

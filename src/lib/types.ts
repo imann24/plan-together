@@ -16,3 +16,13 @@ export type SupabaseItinerary = {
     location: string,
     owner: string,
 }
+
+export function convertSavedToItinerary(saved: SupabaseItinerary): Itinerary {
+    return {
+        eventName: saved.name,
+        place: saved.location,
+        startTime: saved.start,
+        endTime: saved.end,
+        details: saved.description,
+    }
+}
