@@ -17,7 +17,8 @@ function getDate(time: string): DateTime {
         hour24 = 0
     }
 
-    return DateTime.fromISO(`${hour24}:${minutes}`)
+    // ensure times like 9:00 are zero-padded to 09:00, otherwise luxon fails to parse
+    return DateTime.fromISO(`${hour24 < 10 ? '0' : ''}${hour24}:${minutes}`)
 }
 
 export function convertTimeToICSTimestamp(time: string): string {
