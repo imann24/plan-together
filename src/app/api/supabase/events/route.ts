@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     if (error) {
         return Response.json({ error }, { status: 500 })
     }
-    return Response.json({ events: data}, { status: 200 })
+    return Response.json({ events: data }, { status: 200 })
 }
 
 export async function POST(req: Request) {
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     const body: Itinerary = await req.json()
 
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from('events')
         .insert([{
             name: body.eventName,

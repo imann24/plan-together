@@ -8,7 +8,7 @@ export type Itinerary = {
 
 // fields on the database are different:
 export type SupabaseItinerary = {
-    id: string,
+    id: number,
     name: string,
     description: string,
     start: string,

@@ -1,15 +1,8 @@
 import React from 'react'
-import { 
-    Card,
-    CardBody,
-    CardHeader,
-    Spacer,
-} from '@nextui-org/react'
-// import dynamic from 'next/dynamic'
+import { Spacer } from '@nextui-org/react'
 import { SupabaseItinerary } from '@/lib/types'
 import { GET } from '@/app/api/supabase/events/route'
-import { convertToDisplayTimeRange } from '@/lib/time'
-import SavedEventButtons from '@/lib/components/SavedEventButtons'
+import EventCard from '@/lib/components/EventCard'
 
 // page must always be dynamically rendered because it fetches user-specific data
 export const dynamic = 'force-dynamic'
@@ -27,18 +20,7 @@ export default async function SavedEvents() {
         <>
             {events.map((evt: SupabaseItinerary, index: number) => (
                 <>
-                    <Card key={index} shadow="sm">
-                        <CardHeader><h2>{evt.name}</h2></CardHeader>
-                        <CardBody>
-                            <p><b>Where:</b> {evt.location}</p>
-                            <Spacer y={1} />
-                            <p><b>When:</b> {convertToDisplayTimeRange(evt.start, evt.end)}</p>
-                            <Spacer y={1} />
-                            <p><b>Details:</b> {evt.description}</p>
-                            <Spacer y={2} />
-                            <SavedEventButtons event={evt} />
-                        </CardBody>
-                    </Card>
+                    <EventCard key={index} event={evt} showShare />
                     <Spacer y={5} />
                 </>
             ))}
