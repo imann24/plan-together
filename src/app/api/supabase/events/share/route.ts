@@ -3,8 +3,8 @@ import { SupabaseItinerary } from '@/lib/types'
 import { getSession } from '@auth0/nextjs-auth0'
 import { v4 as uuidv4 } from 'uuid'
 
-export const SHARE_SLUG_LENGTH = 6
 export const dynamic = 'force-dynamic'
+const SHARE_SLUG_LENGTH = 6
 
 let supabase: SupabaseClient
 if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {

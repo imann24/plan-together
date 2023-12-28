@@ -15,7 +15,9 @@ An app for planning outtings for groups of friends
 - [x] Implement dark/light mode toggle
 - [x] Add save event to database
 - [x] Parse timestamps returned by database to human readable strings
-- [ ] Add share event with public link
+- [x] Add share event with public link
+- [ ] on `/saved` page, pull down existing share links and replace `Share` button with an `Open` button
+- [ ] Add social media links to share link page
 - [ ] Improve GPT prompt and format to support multiple events in a single itinerary
 - [ ] Export to Google Calendar
 - [ ] Cache responses
@@ -30,3 +32,4 @@ An app for planning outtings for groups of friends
     - [ ] Manual
     - [ ] Follow-up prompts to GPT
 - [ ] Add a delete Saved event button
+- [ ] Hide the navbar under the `/share` path
