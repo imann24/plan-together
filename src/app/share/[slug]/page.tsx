@@ -1,6 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { SupabaseItinerary } from '@/lib/types'
-import { getSession } from '@auth0/nextjs-auth0'
 import EventCard from '@/lib/components/EventCard'
 
 export const dynamic = 'force-dynamic'

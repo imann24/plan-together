@@ -8,7 +8,11 @@ import { convertToDisplayTimeRange } from '@/lib/time'
 import { SupabaseItinerary } from '@/lib/types'
 import SavedEventButtons from '@/lib/components/SavedEventButtons'
 
-export default function EventCard({ event, showShare=false } : { event: SupabaseItinerary, showShare?: boolean }) {
+export default function EventCard({ event, showShare=false, shareSlug=null } : {
+    event: SupabaseItinerary,
+    showShare?: boolean,
+    shareSlug?: string | null,
+}) {
     return (
         <Card shadow="sm">
             <CardHeader><h2>{event.name}</h2></CardHeader>
@@ -19,7 +23,11 @@ export default function EventCard({ event, showShare=false } : { event: Supabase
                 <Spacer y={1} />
                 <p><b>Details:</b> {event.description}</p>
                 <Spacer y={2} />
-                <SavedEventButtons event={event} showShare={showShare} />
+                <SavedEventButtons 
+                    event={event}
+                    showShare={showShare}
+                    shareSlug={shareSlug}
+                />
             </CardBody>
         </Card>
     )

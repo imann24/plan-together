@@ -2,6 +2,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { getSession } from '@auth0/nextjs-auth0'
 import ThemeClient from './theme'
 import './globals.css'
 import ThemeSwitcher from '@/lib/components/ThemeSwitcher'
@@ -15,17 +16,19 @@ export const metadata: Metadata = {
   description: 'An app for making group plans',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getSession()
+
   return (
     <html lang="en">
       <UserProvider>
         <ThemeClient>
           <body className={inter.className}>
-            <NavBar />
+            {!!session && <NavBar />}
             <ThemeSwitcher />
             <h1>
               <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />

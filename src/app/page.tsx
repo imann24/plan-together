@@ -93,11 +93,16 @@ export default function Home() {
                   </ul>
                   <Spacer y={4} />
                   <ButtonGroup>
-                    <Button color="secondary" onClick={() => downloadEvent(itinerary)}>
+                    <Button
+                      color="secondary"
+                      variant="ghost"
+                      onClick={() => downloadEvent(itinerary)}
+                    >
                       Download Event
                     </Button>
                     <Button 
-                      color="secondary" 
+                      color="secondary"
+                      variant="ghost"
                       onClick={() => onSave(itinerary)} 
                       isDisabled={eventSaved}
                     >

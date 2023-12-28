@@ -4,11 +4,16 @@ import React from 'react'
 import {
     Button,
     ButtonGroup,
+    Link,
 } from '@nextui-org/react'
 import { SupabaseItinerary } from '@/lib/types'
 import { initialializeSavedEventDownload } from '@/lib/calendar'
 
-export default function SavedEventButtons({ event, showShare }: { event: SupabaseItinerary, showShare: boolean }) {
+export default function SavedEventButtons({ event, showShare, shareSlug }: {
+    event: SupabaseItinerary,
+    showShare: boolean,
+    shareSlug: string | null,
+}) {
     async function shareEvent(event: SupabaseItinerary) {
         const response = await fetch('/api/supabase/events/share', {
             method: 'POST',
@@ -27,16 +32,27 @@ export default function SavedEventButtons({ event, showShare }: { event: Supabas
         <ButtonGroup>
             <Button
                 color="secondary" 
+                variant="ghost"
                 onClick={() => initialializeSavedEventDownload(event)}
             >
                 Download Event
             </Button>
             {showShare && <Button
                 color="secondary"
+                variant="ghost"
                 onClick={() => shareEvent(event)}
             >
                 Share Event
             </Button>}
+            {shareSlug && <Button
+                color="secondary"
+                variant="ghost"
+                as={Link}
+                href={`/share/${shareSlug}`}
+            >
+                View Shared Event
+            </Button>
+            }
         </ButtonGroup>
     )
 }
