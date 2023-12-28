@@ -18,7 +18,6 @@ export default async function SharePage({ params }: { params: { slug: string } }
         .select('*')
         .eq('share_slug', slug)
         .single()
-
     if (error) {
         console.error('share-page', error)
         return <p><i>Share URL not valid</i></p>
@@ -26,9 +25,19 @@ export default async function SharePage({ params }: { params: { slug: string } }
 
     const { data: event, error: eventError } = await supabase
         .from('events')
-        .select('*')
+        .select<string, SupabaseItinerary>('*')
         .eq('id', share.event_id)
         .single()
+    if (eventError) {
+        console.error('share-page', eventError)
+        return <p><i>Share URL not valid</i></p>
+    }
 
-    return <EventCard event={event as SupabaseItinerary} />
+    return (
+        <EventCard
+            event={event}
+            shareSlug={slug}
+            hideShowButton
+        />
+    )
 }
