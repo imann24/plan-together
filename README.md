@@ -8,7 +8,8 @@ An app for planning outtings for groups of friends
 
 ## TODO
 - [x] Add Auth0 integration
-- [ ] Add download event
+- [x] Add download event
+- [x] Implement dark/light mode toggle
 - [ ] Export to Google Calendar
 - [ ] Cache responses
 - [ ] Integrate with a database
@@ -16,3 +17,5 @@ An app for planning outtings for groups of friends
 - [ ] Improve the rendering of the itinerary/standardize format
 - [ ] Support Setting an event date
 - [ ] Improve timezone logic
+- [ ] Look for a location services API, that can render image and metadata about a location
+- [ ] If form gets too long, add pagination

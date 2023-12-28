@@ -1,7 +1,9 @@
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import ThemeClient from './theme'
 import './globals.css'
+import ThemeSwitcher from './components/ThemeSwitcher'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body className={inter.className}>{children}</body>
+        <ThemeClient>
+          <body className={inter.className}>
+            <ThemeSwitcher />
+            {children}
+          </body>
+        </ThemeClient>
       </UserProvider>
     </html>
   )
