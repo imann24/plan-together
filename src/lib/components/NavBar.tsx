@@ -28,7 +28,7 @@ export default function NavBar({ className='', loggedIn=false }) {
             )}
             <Link size="lg" href="/about" underline={getUnderlineBehavior(path, '/about')}>About</Link>
             {loggedIn && (
-                <Link size="lg" href="/api/auth/logout" underline="hover">Sign Out</Link>
+                <Link size="lg" href="/api/auth/logout" underline="hover">Logout</Link>
             )}
         </nav>
     )
