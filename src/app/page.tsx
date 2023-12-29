@@ -109,7 +109,7 @@ export default function Home() {
                       variant="ghost"
                       onClick={() => downloadEvent(itinerary)}
                     >
-                      Download Event
+                      Add to Calendar
                     </Button>
                     <Button 
                       color="secondary"

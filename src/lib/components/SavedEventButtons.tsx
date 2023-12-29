@@ -35,7 +35,7 @@ export default function SavedEventButtons({ event, showShare, shareSlug }: {
                 variant="ghost"
                 onClick={() => initialializeSavedEventDownload(event)}
             >
-                Download Event
+                Add to Calendar
             </Button>
             {showShare && <Button
                 color="secondary"
