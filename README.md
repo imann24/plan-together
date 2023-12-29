@@ -44,3 +44,4 @@ An app for planning outtings for groups of friends
 - [x] Add copy button to address in event details
 - [ ] Consider supporting multiday events
 - [ ] Add MixPanel analytics
+- [ ] Remember last input to prompt (on navigate away or switch tabs)
