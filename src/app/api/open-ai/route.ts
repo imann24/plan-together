@@ -3,7 +3,6 @@ import {
     Client as GoogleMapsClient,
     PlaceInputType,
 } from '@googlemaps/google-maps-services-js'
-import { getSession } from '@auth0/nextjs-auth0'
 
 export const dynamic = 'force-dynamic' // defaults to auto
 
@@ -74,11 +73,6 @@ async function getLocationWebsiteFromGoogleMaps(
 }
 
 export async function POST(req: Request) {
-    const auth0Session = await getSession()
-    if (!auth0Session) {
-        return Response.json({ error: 'Not authenticated' }, { status: 401 })
-    }
-
     if (!openai) {
         return Response.json({ error: 'OpenAI not initialized' }, { status: 500 })
     }

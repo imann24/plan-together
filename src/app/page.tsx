@@ -13,12 +13,15 @@ import {
   CardHeader,
   Textarea,
   Snippet,
+  Link,
 } from '@nextui-org/react'
 import { DateTime } from 'luxon'
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { type Itinerary } from '@/lib/types'
 import { initializeEventDownload } from '@/lib/calendar'
 
 export default function Home() {
+  const { user } = useUser()
   const [loadingAnswer, setLoadingAnswer] = useState(false)
   const [eventSaved, setEventSaved] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
@@ -103,6 +106,13 @@ export default function Home() {
                     </li>
                   </ul>
                   <Spacer y={4} />
+                  {!user && (
+                    <p><i>
+                      Please{' '}
+                      <Link href="/api/auth/login">sign in</Link>{' '}
+                      to <b>Save</b> events
+                    </i></p>
+                  )}
                   <ButtonGroup>
                     <Button
                       color="secondary"
@@ -115,7 +125,7 @@ export default function Home() {
                       color="secondary"
                       variant="ghost"
                       onClick={() => onSave(itinerary)} 
-                      isDisabled={eventSaved}
+                      isDisabled={!user || eventSaved}
                     >
                       Save Event
                     </Button>

@@ -16,9 +16,9 @@ export default function NavBar({ className='', loggedIn=false }) {
 
     return (
         <nav className={className}>
+            <Link size="lg" href="/" underline={getUnderlineBehavior(path, '/')}>Create</Link>
             {loggedIn && (
                 <>
-                    <Link size="lg" href="/" underline={getUnderlineBehavior(path, '/')}>Create</Link>
                     <Link size="lg" href="/saved" underline={getUnderlineBehavior(path, '/saved')}>Saved</Link>
                     <Link size="lg" href="/share" underline={getUnderlineBehavior(path, '/share')}>Shared</Link>
                 </>
