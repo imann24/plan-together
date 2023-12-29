@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 body {
   padding: 1rem; 
@@ -26,9 +26,9 @@ h3 {
 
 nav {
   display: flex;
-  width: 90vw;
   gap: 1rem;
   margin-bottom: 1rem;
+  padding-right: 1rem;
 }
 
 p {

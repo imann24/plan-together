@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import React, { FormEvent, useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import {
   Button,
@@ -20,11 +20,46 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { type Itinerary } from '@/lib/types'
 import { initializeEventDownload } from '@/lib/calendar'
 
+const LOCAL_STORAGE_PREFIX_FORM = 'plan-together-form-'
+const LOCAL_STORAGE_PREFIX_ANSWER = 'plan-together-answer-'
+
 export default function Home() {
   const { user } = useUser()
   const [loadingAnswer, setLoadingAnswer] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [eventSaved, setEventSaved] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
+
+  useEffect(() => {
+    const eventName = localStorage.getItem(`${LOCAL_STORAGE_PREFIX_ANSWER}eventName`)
+    if (!eventName) {
+      // If the first key is empty, assume that no itinerary has been saved to localStorage
+      return
+    }
+    const savedItinerary: Itinerary = {
+      eventName,
+      place: localStorage.getItem(`${LOCAL_STORAGE_PREFIX_ANSWER}place`) || '',
+      startTime: localStorage.getItem(`${LOCAL_STORAGE_PREFIX_ANSWER}startTime`) || '',
+      endTime: localStorage.getItem(`${LOCAL_STORAGE_PREFIX_ANSWER}endTime`) || '',
+      details: localStorage.getItem(`${LOCAL_STORAGE_PREFIX_ANSWER}details`) || '',
+    }
+    setItinerary(savedItinerary)
+  }, [])
+
+  function saveFormToLocalStorage(event: React.ChangeEvent<HTMLFormElement>) {
+    const formData = new FormData(event.currentTarget)
+    const answers = Object.fromEntries(formData.entries())
+    for (const ans in answers) {
+      localStorage.setItem(`${LOCAL_STORAGE_PREFIX_FORM}${ans}`, answers[ans] as string)
+    }
+  }
+  
+  function saveEventToLocalStorage(itinerary: Itinerary) {
+    for (const key in itinerary) {
+      // hack with 'as any' to allow us to index through the object
+      localStorage.setItem(`${LOCAL_STORAGE_PREFIX_ANSWER}${key}`, (itinerary as any)[key] as string)
+    }
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     setItinerary(null)
@@ -39,8 +74,17 @@ export default function Home() {
  
     // Handle response if necessary
     const data = await response.json()
-    setItinerary(data.itinerary)
+    const itinerary: Itinerary = data.itinerary
+    
     setLoadingAnswer(false)
+    if (!itinerary) {
+      setError(data.error)
+      return
+    }
+
+    setItinerary(itinerary)
+    // ensure that this response is saved even if we reload the page:
+    saveEventToLocalStorage(itinerary)
     setEventSaved(false)
   }
 
@@ -61,14 +105,37 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 max-w-5xl w-full">
-        <form onSubmit={onSubmit} className="max-w-4xl">
-          <Input label="Date" type="date" name="date" defaultValue={DateTime.local().toFormat('yyyy-MM-dd')} />
+        <form onSubmit={onSubmit} onChange={saveFormToLocalStorage} className="max-w-4xl">
+          <Input 
+            label="Date"
+            type="date"
+            name="date"
+            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}date`) || DateTime.local().toFormat('yyyy-MM-dd')}
+          />
           <Spacer y={2} />
-          <Input type="number" placeholder="count" label="Group Size" name="group-size" />
+          <Input
+            type="number"
+            placeholder="count"
+            label="Group Size"
+            name="group-size"
+            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}group-size`) || undefined}
+          />
           <Spacer />
-          <Input type="text" placeholder="city" label="Location" name="location" />
+          <Input
+            type="text"
+            placeholder="city"
+            label="Location"
+            name="location"
+            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}location`) || undefined}
+          />
           <Spacer />
-          <Textarea placeholder="describe" label="Interests" aria-label="Interests" name="interests" />
+          <Textarea 
+            placeholder="describe"
+            label="Interests"
+            aria-label="Interests"
+            name="interests"
+            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
+          />
           <Spacer />
           <Button color="primary" type="submit" size="lg">Submit</Button>
         </form>
@@ -97,7 +164,7 @@ export default function Home() {
                       {itinerary.startTime}
                       {'-'}
                       {/* strip out the date from the event */}
-                      {itinerary.endTime.includes(',') ? itinerary.endTime.split(', ')[1] : itinerary.endTime}
+                      {itinerary.endTime?.includes(',') ? itinerary.endTime.split(', ')[1] : itinerary.endTime}
                     </li>
                     <Spacer />
                     <li>
@@ -132,7 +199,10 @@ export default function Home() {
                   </ButtonGroup>
                 </>
               )}
-              {!itinerary && !loadingAnswer && (
+              {error && (
+                <p className="text-red-500 italic">{error}</p>
+              )}
+              {!error && !itinerary && !loadingAnswer && (
                 <i>fill out form to get started</i>
               )}
             </div>

@@ -58,3 +58,4 @@ An app for planning outtings for groups of friends
     - [ ] Strip markdown links out of messages
 - [ ] Add a fuzzy string match check to see if Google Maps result is correct
 - [x] Create about page
+- [ ] After event has been saved on `Create` page, disable `Save` button on future reloads of page

@@ -23,12 +23,22 @@ export default function NavBar({ className='', loggedIn=false }) {
                     <Link size="lg" href="/share" underline={getUnderlineBehavior(path, '/share')}>Shared</Link>
                 </>
             )}
-            {!loggedIn && (
-                <Link size="lg" href="/api/auth/login" underline="hover">Sign In</Link>
-            )}
             <Link size="lg" href="/about" underline={getUnderlineBehavior(path, '/about')}>About</Link>
+            {!loggedIn && (
+                <Link size="lg" href="/api/auth/login" underline="hover" style={{
+                    marginLeft: 'auto',
+                    alignSelf: 'end,'
+                }}>
+                    Sign In
+                </Link>
+            )}
             {loggedIn && (
-                <Link size="lg" href="/api/auth/logout" underline="hover">Logout</Link>
+                <Link size="lg" href="/api/auth/logout" underline="hover" style={{
+                    marginLeft: 'auto',
+                    alignSelf: 'end,'
+                }}>
+                    Logout
+                </Link>
             )}
         </nav>
     )
