@@ -25,6 +25,7 @@ export async function GET(req: Request) {
         .from('events')
         .select('*')
         .eq('owner', session.user.sub)
+        .order('start', { ascending: false }) // Sort by start property in descending order
 
     if (error) {
         return Response.json({ error }, { status: 500 })

@@ -24,3 +24,13 @@ nav {
   gap: 1rem;
   margin-bottom: 1rem;
 }
+
+p a, p a:visited {
+  /* TODO: replace this with an actual variable for secondary theme color: */
+  color: rgb(120, 40, 200);
+  font-weight: 700;
+}
+
+p a:hover {
+  text-decoration: underline;
+}

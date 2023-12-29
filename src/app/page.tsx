@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import {
   Button,
   ButtonGroup,
@@ -89,7 +90,10 @@ export default function Home() {
                       {itinerary.endTime}
                     </li>
                     <Spacer />
-                    <li><b>Details:</b> {itinerary.details}</li>
+                    <li>
+                      <b>Details:</b>
+                      <ReactMarkdown>{itinerary.details}</ReactMarkdown>
+                    </li>
                   </ul>
                   <Spacer y={4} />
                   <ButtonGroup>

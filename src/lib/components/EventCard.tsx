@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import {
     Card,
     CardBody,
@@ -50,7 +51,12 @@ export default function EventCard({
                 <Spacer y={1} />
                 <p><b>When:</b> {convertToDisplayTimeRange(event.start, event.end)}</p>
                 <Spacer y={1} />
-                <p><b>Details:</b> {event.description}</p>
+                <p>
+                    <b>Details:</b>
+                    <ReactMarkdown>
+                        {event.description}
+                    </ReactMarkdown>
+                </p>
                 <Spacer y={2} />
                 <SavedEventButtons 
                     event={event}

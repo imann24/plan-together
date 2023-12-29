@@ -6,6 +6,7 @@ An app for planning outtings for groups of friends
     1. [OpenAI](https://platform.openai.com/docs/quickstart?context=node)
     1. [Auth0](https://auth0.com/docs/get-started)
     1. [Supabase](https://supabase.com/dashboard/projects)
+    1. [Google Maps API](https://developers.google.com/maps/documentation/javascript/cloud-setup)
 1. `yarn install`
 1. `yarn dev`
 
@@ -37,3 +38,4 @@ An app for planning outtings for groups of friends
 - [ ] Add a button to sign in and create events on `/share/<share_slug>` path
 - [ ] Save input configurations to regenerate further ideas
 - [ ] Integrate with `react-add-to-calendar` https://www.npmjs.com/package/add-to-calendar-button-react
+- [ ] Edit ChatGPT response for locations that are permanently clsoed
