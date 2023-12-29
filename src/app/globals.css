@@ -36,7 +36,8 @@ p a:hover {
 }
 
 .location pre {
-  font-family: sans-serif;
+  /* hack to use NextJS's default font: */
+  font-family: __Inter_e66fe9, sans-serif;
   font-size: 1rem;
   white-space: normal;
 }
