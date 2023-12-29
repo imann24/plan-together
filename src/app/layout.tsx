@@ -1,6 +1,7 @@
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import { getSession } from '@auth0/nextjs-auth0'
 import ThemeClient from './theme'
@@ -29,9 +30,11 @@ export default async function RootLayout({
         <ThemeClient>
           <body className={inter.className}>
             <h1 className="mt-7 md:mt-0">
-              <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />
-              {' '}
-              {appName}
+              <Link href="/">
+                <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />
+                {' '}
+                {appName}
+              </Link>
             </h1>
             <NavBar loggedIn={!!session}/>
             <ThemeSwitcher />
