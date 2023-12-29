@@ -36,8 +36,7 @@ p {
 }
 
 p a, p a:visited {
-  /* TODO: replace this with an actual variable for secondary theme color: */
-  color: rgb(120, 40, 200);
+  color: hsl(var(--nextui-secondary));
   font-weight: 700;
 }
 
