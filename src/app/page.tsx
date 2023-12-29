@@ -74,8 +74,8 @@ export default function Home() {
         </form>
         <Spacer y={5} />
         <Card className="itinerary" isBlurred>
-          <CardHeader>
-            <h2 className="font-bold text-large">Itinerary</h2>
+          <CardHeader className="pb-0">
+            <h2 className="font-bold text-large pb-0 mb-0">Itinerary</h2>
           </CardHeader>
           <CardBody>
             {loadingAnswer && (
