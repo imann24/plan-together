@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             title: `PlanTogether - ${event.name}`,
             description: event.description,
             // TODO: improve this image to be 1200x630px
-            images: 'https://rdczidspmymfhkkzohvt.supabase.co/storage/v1/object/public/assets/logo.png',
+            images: 'https://plan-together.fly.dev/logo.png',
             type: 'website',
             url: 'https://plan-together.fly.dev'
         }
