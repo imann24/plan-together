@@ -43,12 +43,15 @@ const formatPrompt = (
     `
 }
 
-async function getLocationWebsiteFromGoogleMaps(location: string): Promise<string | null> {
+async function getLocationWebsiteFromGoogleMaps(
+    locationName: string,
+    locationArea: string,
+): Promise<string | null> {
     if (process.env.GOOGLE_MAPS_API_KEY) {
         const googleMapsResponse = await googleMaps.findPlaceFromText({
             params: {
                 key: process.env.GOOGLE_MAPS_API_KEY,
-                input: location,
+                input: `${locationName}, ${locationArea}`,
                 inputtype: 'textquery' as PlaceInputType,
                 fields: ['place_id'],
             },
@@ -111,7 +114,7 @@ export async function POST(req: Request) {
         const googleMapsResponse = await googleMaps.findPlaceFromText({
             params: {
                 key: process.env.GOOGLE_MAPS_API_KEY,
-                input: openAIResponse.place,
+                input: `${openAIResponse.place}, ${location}`,
                 inputtype: 'textquery' as PlaceInputType,
                 fields: ['formatted_address', 'name', 'place_id'],
             },
@@ -137,18 +140,18 @@ export async function POST(req: Request) {
         const locationMatches = openAIResponse.details.match(/\((?!https?:\/\/)(?:[^'()\s]+\.(?!com|org|net|gov|edu|io)[^\s)]+|[^()\s]+(?:\s+[^()\s]+)*)\)/g)
         if (locationMatches) {
             for (const loc of locationMatches) {
-                const location = loc.replace('(', '').replace(')', '')
-                const locationWebsite = await getLocationWebsiteFromGoogleMaps(location)
+                const locationRec = loc.replace('(', '').replace(')', '')
+                const locationWebsite = await getLocationWebsiteFromGoogleMaps(locationRec, location as string)
                 if (locationWebsite) {
                     openAIResponse.details = openAIResponse.details.replace(
                         loc,
-                        `[${location}](${locationWebsite})`,
+                        `[${locationRec}](${locationWebsite})`,
                     )
                 } else {
                     // even if we don't find a website match, remove the parantheses:
                     openAIResponse.details = openAIResponse.details.replace(
                         loc,
-                        `${location}`,
+                        `${locationRec}`,
                     )
                 }
             }
