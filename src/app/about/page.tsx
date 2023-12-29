@@ -5,7 +5,7 @@ export default function AboutPage() {
         <div className="m-10">
             <p>
                 <h3>Concept</h3>
-                It's challenging to plan group events with friends. 
+                It&apos;s challenging to plan group events with friends. 
                 It requires lots of coordination and communication. My friend <b>Kaysha </b>
                 came up with this app to help groups have great outings.
             </p>
@@ -17,7 +17,7 @@ export default function AboutPage() {
             <p>
                 <h3>Technology</h3>
                 This app is powered by <Link href="https://nextjs.org">Next.js</Link> and uses{' '}
-                <Link href="https://platform.openai.com/docs/models/gpt-3-5">OpenAI's GPT-3.5 model</Link>{' '}
+                <Link href="https://platform.openai.com/docs/models/gpt-3-5">OpenAI&apos;s GPT-3.5 model</Link>{' '}
                 to generate its answers. The source code is available on <Link href="https://github.com/imann24/plan-together">GitHub</Link>.{' '}
                 This project also uses:
                 <ul className="list-disc pl-5">
