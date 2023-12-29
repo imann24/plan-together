@@ -25,6 +25,7 @@ export default function AboutPage() {
                     <li><Link href="https://developers.google.com/maps">Google Maps API</Link></li>
                     <li><Link href="https://nextui.org/">NextUI</Link></li>
                     <li><Link href="https://auth0.com/">Auth0</Link></li>
+                    <li><Link href="https://redis.io/">Redis</Link></li>
                 </ul>
             </p>
         </div>

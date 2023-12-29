@@ -7,8 +7,13 @@ An app for planning outtings for groups of friends
     1. [Auth0](https://auth0.com/docs/get-started)
     1. [Supabase](https://supabase.com/dashboard/projects)
     1. [Google Maps API](https://developers.google.com/maps/documentation/javascript/cloud-setup)
+    1. [fly.io Hosted Redis](https://fly.io/docs/reference/redis/)
 1. `yarn install`
 1. `yarn dev`
+
+## Deploy
+1. Set up `fly.io` account https://fly.io/docs/getting-started/
+1. `fly deploy`
 
 ## TODO
 - [x] Add Auth0 integration
