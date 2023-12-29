@@ -36,6 +36,9 @@ export default async function ShareListPage() {
         .from('events')
         .select<string, SupabaseItinerary>('*')
         .in('id', shares?.map(share => share.event_id) || [])
+        .eq('owner', user.sub)
+        .order('start', { ascending: false })
+
     if (eventError) {
         console.error('share-list-page', eventError)
         return unableToLoadMessage

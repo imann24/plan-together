@@ -19,7 +19,7 @@ An app for planning outtings for groups of friends
 - [x] Add share event with public link
 - [ ] on `/saved` page, pull down existing share links and replace `Share` button with an `Open` button
 - [x] Add social media links to share link page
-- [ ] Improve GPT prompt and format to support multiple events in a single itinerary
+- [x] Improve GPT prompt and format to support multiple events in a single itinerary
 - [ ] Export to Google Calendar
 - [ ] Cache responses
 - [x] Integrate with a database
@@ -28,6 +28,8 @@ An app for planning outtings for groups of friends
 - [ ] Support Setting an event date
 - [ ] Improve timezone logic
 - [ ] Look for a location services API, that can render image and metadata about a location
+    - [x] Location websites
+    - [ ] Location images
 - [ ] If form gets too long, add pagination
 - [ ] Allow for revisions to events
     - [ ] Manual
@@ -39,3 +41,4 @@ An app for planning outtings for groups of friends
 - [ ] Save input configurations to regenerate further ideas
 - [ ] Integrate with `react-add-to-calendar` https://www.npmjs.com/package/add-to-calendar-button-react
 - [ ] Edit ChatGPT response for locations that are permanently clsoed
+- [ ] Add copy button to address in event details
