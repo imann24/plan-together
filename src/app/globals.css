@@ -18,11 +18,21 @@ h2 {
   margin-bottom: 1rem;
 }
 
+h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
 nav {
   display: flex;
   width: 90vw;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 0.75rem;
 }
 
 p a, p a:visited {

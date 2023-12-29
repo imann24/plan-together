@@ -30,8 +30,6 @@ export default function ThemeSwitcher () {
                     <SunIcon className={className} />
                 )
             }
-        >
-            Dark Mode
-      </Switch>
+        />
     )
 }

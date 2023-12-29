@@ -28,13 +28,13 @@ export default async function RootLayout({
       <UserProvider>
         <ThemeClient>
           <body className={inter.className}>
-            {!!session && <NavBar />}
-            <ThemeSwitcher />
-            <h1>
+            <h1 className="mt-7 md:mt-0">
               <Image className="inline" src="/logo.png" width={35} height={35} alt="logo" />
               {' '}
               {appName}
             </h1>
+            <NavBar loggedIn={!!session}/>
+            <ThemeSwitcher />
             {children}
           </body>
         </ThemeClient>

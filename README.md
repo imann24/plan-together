@@ -22,6 +22,7 @@ An app for planning outtings for groups of friends
 - [x] Improve GPT prompt and format to support multiple events in a single itinerary
 - [ ] Export to Google Calendar
 - [ ] Cache responses
+    - [ ] Especially Supabase results on pub share page
 - [x] Integrate with a database
 - [ ] Add additional + optional fields
 - [ ] Improve the rendering of the itinerary/standardize format
@@ -48,3 +49,5 @@ An app for planning outtings for groups of friends
 - [ ] Improve the social media metadata (OpenGraph) logic on share pages
     - [ ] DRY up code between page render and metadata gen
     - [ ] Strip markdown links out of messages
+- [ ] Add a fuzzy string match check to see if Google Maps result is correct
+- [x] Create about page
