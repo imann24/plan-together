@@ -12,7 +12,7 @@ import {
 
 export default function ShareEventButtons({ shareUrl }: { shareUrl: string }) {
     return (
-        <div className="flex flex-row justify-end gap-2">
+        <div className="flex flex-row justify-end gap-2 p-4">
             <FacebookShareButton url={shareUrl}>
                 <FacebookIcon size={32} round />
                 <FacebookShareCount url={shareUrl} />
