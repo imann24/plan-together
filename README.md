@@ -25,7 +25,7 @@ An app for planning outtings for groups of friends
 - [x] Integrate with a database
 - [ ] Add additional + optional fields
 - [ ] Improve the rendering of the itinerary/standardize format
-- [ ] Support Setting an event date
+- [x] Support Setting an event date
 - [ ] Improve timezone logic
 - [ ] Look for a location services API, that can render image and metadata about a location
     - [x] Location websites
@@ -42,3 +42,4 @@ An app for planning outtings for groups of friends
 - [ ] Integrate with `react-add-to-calendar` https://www.npmjs.com/package/add-to-calendar-button-react
 - [ ] Edit ChatGPT response for locations that are permanently clsoed
 - [ ] Add copy button to address in event details
+- [ ] Consider supporting multiday events

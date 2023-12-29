@@ -13,6 +13,7 @@ import {
   CardHeader,
   Textarea,
 } from '@nextui-org/react'
+import { DateTime } from 'luxon'
 import { type Itinerary } from '@/lib/types'
 import { initializeEventDownload } from '@/lib/calendar'
 
@@ -57,12 +58,13 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 max-w-5xl w-full">
         <form onSubmit={onSubmit} className="max-w-4xl">
+          <Input label="Date" type="date" name="date" defaultValue={DateTime.local().toFormat('yyyy-MM-dd')} />
           <Spacer y={2} />
           <Input type="number" placeholder="count" label="Group Size" name="group-size" />
           <Spacer />
           <Input type="text" placeholder="city" label="Location" name="location" />
           <Spacer />
-          <Textarea placeholder="list" label="Interests" aria-label="Interests" name="interests" />
+          <Textarea placeholder="describe" label="Interests" aria-label="Interests" name="interests" />
           <Spacer />
           <Button color="primary" type="submit" size="lg">Submit</Button>
         </form>
@@ -87,7 +89,8 @@ export default function Home() {
                       {' '}
                       {itinerary.startTime}
                       {'-'}
-                      {itinerary.endTime}
+                      {/* strip out the date from the event */}
+                      {itinerary.endTime.includes(',') ? itinerary.endTime.split(', ')[1] : itinerary.endTime}
                     </li>
                     <Spacer />
                     <li>

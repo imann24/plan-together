@@ -17,7 +17,12 @@ if (process.env.OPENAI_API_KEY) {
 }
 let googleMaps: GoogleMapsClient = new GoogleMapsClient({})
 
-const formatPrompt = (groupSize: number, location: string, interests: string): string => {
+const formatPrompt = (
+    groupSize: number,
+    location: string,
+    interests: string,
+    date: string,
+): string => {
     return `
     Please plan a day of activities for a group and respond in the form a JSON object.
     'place' should be the starting real life business/location.
@@ -25,8 +30,8 @@ const formatPrompt = (groupSize: number, location: string, interests: string): s
     {
         eventName: a relevant title as a pun or play on words,
         place: a specific starting location/business,
-        startTime: 12-hour time,
-        endTime: 12-hour time,
+        startTime: date as mm/dd/yy, 12-hour time start of the first activity,
+        endTime: date as mm/dd/yy, 12-hour time end of last activity,
         details: description of activities, real life locations, and timing. Wrap each location name in parantheses
     }
 
@@ -34,6 +39,7 @@ const formatPrompt = (groupSize: number, location: string, interests: string): s
         Group size: ${groupSize}
         Location: ${location}
         Interests: ${interests}
+        Date: ${date}
     `
 }
 
@@ -82,6 +88,7 @@ export async function POST(req: Request) {
     }
     const location = body.get('location')
     const interests = body.get('interests')
+    const date = body.get('date')
 
     const answer = await openai.chat.completions.create({
         // use 3.5 because it supports json_object response format
@@ -93,6 +100,7 @@ export async function POST(req: Request) {
                 groupSize,
                 location as string,
                 interests as string,
+                date as string,
             )
         }],
     })
@@ -126,7 +134,7 @@ export async function POST(req: Request) {
             }
         }
         // give a regex that matchese any term wrapped in parantheses and is not a url
-        const locationMatches = openAIResponse.details.match(/\((?!https?:\/\/)(?:\w+(?:\s+\w+)*|\S+\.(?!com|org|net|gov|edu|io)[^\s\)]+)\)/g)
+        const locationMatches = openAIResponse.details.match(/\((?!https?:\/\/)(?:[^'()\s]+\.(?!com|org|net|gov|edu|io)[^\s)]+|[^()\s]+(?:\s+[^()\s]+)*)\)/g)
         if (locationMatches) {
             for (const loc of locationMatches) {
                 const location = loc.replace('(', '').replace(')', '')
