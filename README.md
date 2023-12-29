@@ -45,3 +45,6 @@ An app for planning outtings for groups of friends
 - [ ] Consider supporting multiday events
 - [ ] Add MixPanel analytics
 - [ ] Remember last input to prompt (on navigate away or switch tabs)
+- [ ] Improve the social media metadata (OpenGraph) logic on share pages
+    - [ ] DRY up code between page render and metadata gen
+    - [ ] Strip markdown links out of messages

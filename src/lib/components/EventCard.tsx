@@ -51,12 +51,10 @@ export default function EventCard({
                 <Spacer y={1} />
                 <p><b>When:</b> {convertToDisplayTimeRange(event.start, event.end)}</p>
                 <Spacer y={1} />
-                <p>
-                    <b>Details:</b>
-                    <ReactMarkdown>
-                        {event.description}
-                    </ReactMarkdown>
-                </p>
+                <b>Details:</b>
+                <ReactMarkdown>
+                    {event.description}
+                </ReactMarkdown>
                 <Spacer y={2} />
                 <SavedEventButtons 
                     event={event}
