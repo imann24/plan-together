@@ -28,7 +28,7 @@ const formatPrompt = (
     'place' should be the starting real life business/location.
     The JSON object should be single entry that summarizes the entire day with the following format:
     {
-        eventName: a relevant title as a pun or play on words,
+        eventName: a relevant title as a clever pun or play on words,
         place: a specific starting location/business,
         startTime: date as mm/dd/yy, 12-hour time start of the first activity,
         endTime: date as mm/dd/yy, 12-hour time end of last activity,
