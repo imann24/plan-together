@@ -125,21 +125,24 @@ export async function POST(req: Request) {
                 )
             }
         }
-        const locationMatches = openAIResponse.details.match(/\((.*?)\)/g)
-        for (const loc of locationMatches) {
-            const location = loc.replace('(', '').replace(')', '')
-            const locationWebsite = await getLocationWebsiteFromGoogleMaps(location)
-            if (locationWebsite) {
-                openAIResponse.details = openAIResponse.details.replace(
-                    loc,
-                    `[${location}](${locationWebsite})`,
-                )
-            } else {
-                // even if we don't find a website match, remove the parantheses:
-                openAIResponse.details = openAIResponse.details.replace(
-                    loc,
-                    `${location}`,
-                )
+        // give a regex that matchese any term wrapped in parantheses and is not a url
+        const locationMatches = openAIResponse.details.match(/\((?!https?:\/\/)(?:\w+(?:\s+\w+)*|\S+\.(?!com|org|net|gov|edu|io)[^\s\)]+)\)/g)
+        if (locationMatches) {
+            for (const loc of locationMatches) {
+                const location = loc.replace('(', '').replace(')', '')
+                const locationWebsite = await getLocationWebsiteFromGoogleMaps(location)
+                if (locationWebsite) {
+                    openAIResponse.details = openAIResponse.details.replace(
+                        loc,
+                        `[${location}](${locationWebsite})`,
+                    )
+                } else {
+                    // even if we don't find a website match, remove the parantheses:
+                    openAIResponse.details = openAIResponse.details.replace(
+                        loc,
+                        `${location}`,
+                    )
+                }
             }
         }
     }
