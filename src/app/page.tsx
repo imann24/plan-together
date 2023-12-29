@@ -12,6 +12,7 @@ import {
   CardBody,
   CardHeader,
   Textarea,
+  Snippet,
 } from '@nextui-org/react'
 import { DateTime } from 'luxon'
 import { type Itinerary } from '@/lib/types'
@@ -82,7 +83,10 @@ export default function Home() {
                 <>
                   <ul>
                     <li><b>What:</b> {itinerary.eventName}</li>
-                    <li><b>Where:</b> {itinerary.place}</li>
+                    <li>
+                      <b>Where:</b>{' '}
+                      <Snippet className="border-none p-0 location" variant="bordered" hideSymbol>{itinerary.place}</Snippet>
+                    </li>
                     <Spacer />
                     <li>
                       <b>When:</b>

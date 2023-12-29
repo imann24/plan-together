@@ -41,5 +41,6 @@ An app for planning outtings for groups of friends
 - [ ] Save input configurations to regenerate further ideas
 - [ ] Integrate with `react-add-to-calendar` https://www.npmjs.com/package/add-to-calendar-button-react
 - [ ] Edit ChatGPT response for locations that are permanently clsoed
-- [ ] Add copy button to address in event details
+- [x] Add copy button to address in event details
 - [ ] Consider supporting multiday events
+- [ ] Add MixPanel analytics

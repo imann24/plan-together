@@ -34,3 +34,9 @@ p a, p a:visited {
 p a:hover {
   text-decoration: underline;
 }
+
+.location pre {
+  font-family: sans-serif;
+  font-size: 1rem;
+  white-space: normal;
+}
