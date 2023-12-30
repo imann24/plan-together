@@ -1,6 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { SupabaseItinerary } from '@/lib/types'
 import EventCard from '@/lib/components/EventCard'
+import TrackPageLoad from '@/lib/components/TrackPageLoad'
 import { cacheGet, cacheSet } from '@/lib/cache'
 
 export const dynamic = 'force-dynamic'
@@ -76,6 +77,7 @@ export default async function SharePage({ params }: { params: { slug: string } }
 
     return (
         <div>
+            <TrackPageLoad page="Share" />
             <EventCard
                 event={event}
                 shareSlug={slug}

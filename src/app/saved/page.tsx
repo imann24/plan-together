@@ -3,6 +3,7 @@ import { Spacer } from '@nextui-org/react'
 import { SupabaseItinerary } from '@/lib/types'
 import { GET } from '@/app/api/supabase/events/route'
 import EventCard from '@/lib/components/EventCard'
+import TrackPageLoad from '@/lib/components/TrackPageLoad'
 
 // page must always be dynamically rendered because it fetches user-specific data
 export const dynamic = 'force-dynamic'
@@ -18,6 +19,7 @@ export default async function SavedEvents() {
     const events = await fetchEvents()
     return (
         <>
+            <TrackPageLoad page="Saved" />
             {events.map((evt: SupabaseItinerary, index: number) => (
                 <>
                     <EventCard key={index} event={evt} showShare />

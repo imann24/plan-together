@@ -4,6 +4,7 @@ import { getSession } from '@auth0/nextjs-auth0'
 import { Spacer } from '@nextui-org/react'
 import { SupabaseItinerary } from '@/lib/types'
 import EventCard from '@/lib/components/EventCard'
+import TrackPageLoad from '@/lib/components/TrackPageLoad'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,6 +47,7 @@ export default async function ShareListPage() {
 
     return (
         <>
+            <TrackPageLoad page="Share List" />
             {events?.map(event => 
                 <>
                     <EventCard 

@@ -8,6 +8,7 @@ import {
 } from '@nextui-org/react'
 import { SupabaseItinerary } from '@/lib/types'
 import { initialializeSavedEventDownload } from '@/lib/calendar'
+import { trackEvent } from '@/lib/mixpanel'
 
 export default function SavedEventButtons({ event, showShare, shareSlug }: {
     event: SupabaseItinerary,
@@ -15,6 +16,7 @@ export default function SavedEventButtons({ event, showShare, shareSlug }: {
     shareSlug: string | null,
 }) {
     async function shareEvent(event: SupabaseItinerary) {
+        trackEvent('share', { event })
         const response = await fetch('/api/supabase/events/share', {
             method: 'POST',
             headers: {
@@ -33,7 +35,10 @@ export default function SavedEventButtons({ event, showShare, shareSlug }: {
             <Button
                 color="secondary" 
                 variant="ghost"
-                onClick={() => initialializeSavedEventDownload(event)}
+                onClick={() => {
+                    trackEvent('download', { event })
+                    initialializeSavedEventDownload(event)
+                }}
             >
                 Add to Calendar
             </Button>

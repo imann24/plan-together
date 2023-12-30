@@ -8,6 +8,7 @@ An app for planning outtings for groups of friends
     1. [Supabase](https://supabase.com/dashboard/projects)
     1. [Google Maps API](https://developers.google.com/maps/documentation/javascript/cloud-setup)
     1. [fly.io Hosted Redis](https://fly.io/docs/reference/redis/)
+    1. [Mixpanel](https://docs.mixpanel.com/docs/tutorials/onboarding-overview)
 1. `yarn install`
 1. `yarn dev`
 
@@ -51,7 +52,7 @@ An app for planning outtings for groups of friends
 - [ ] Edit ChatGPT response for locations that are permanently clsoed
 - [x] Add copy button to address in event details
 - [ ] Consider supporting multiday events
-- [ ] Add MixPanel analytics
+- [x] Add MixPanel analytics
 - [ ] Remember last input to prompt (on navigate away or switch tabs)
 - [ ] Improve the social media metadata (OpenGraph) logic on share pages
     - [ ] DRY up code between page render and metadata gen

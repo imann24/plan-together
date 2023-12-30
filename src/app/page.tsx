@@ -19,6 +19,7 @@ import { DateTime } from 'luxon'
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { type Itinerary } from '@/lib/types'
 import { initializeEventDownload } from '@/lib/calendar'
+import { trackPageView, trackEvent } from '@/lib/mixpanel'
 
 const LOCAL_STORAGE_PREFIX_FORM = 'plan-together-form-'
 const LOCAL_STORAGE_PREFIX_ANSWER = 'plan-together-answer-'
@@ -31,6 +32,7 @@ export default function Home() {
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
 
   useEffect(() => {
+    trackPageView('Create')
     const eventName = localStorage.getItem(`${LOCAL_STORAGE_PREFIX_ANSWER}eventName`)
     if (!eventName) {
       // If the first key is empty, assume that no itinerary has been saved to localStorage
@@ -45,6 +47,12 @@ export default function Home() {
     }
     setItinerary(savedItinerary)
   }, [])
+
+  function safeLocalStorageGet(key: string) {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(key)
+    }
+  }
 
   function saveFormToLocalStorage(event: React.ChangeEvent<HTMLFormElement>) {
     const formData = new FormData(event.currentTarget)
@@ -67,6 +75,7 @@ export default function Home() {
     event.preventDefault()
  
     const formData = new FormData(event.currentTarget)
+    trackEvent('form_submit', { form: Object.fromEntries(formData.entries()) })
     const response = await fetch('/api/open-ai', {
       method: 'POST',
       body: formData,
@@ -81,7 +90,7 @@ export default function Home() {
       setError(data.error)
       return
     }
-
+    trackEvent('form_answer', { itinerary })
     setItinerary(itinerary)
     // ensure that this response is saved even if we reload the page:
     saveEventToLocalStorage(itinerary)
@@ -89,6 +98,7 @@ export default function Home() {
   }
 
   async function onSave(itinerary: Itinerary): Promise<void> {
+    trackEvent('save', { itinerary })
     const response = await fetch('/api/supabase/events', {
       method: 'POST',
       body: JSON.stringify(itinerary),
@@ -99,6 +109,7 @@ export default function Home() {
   }
 
   function downloadEvent(itinerary: Itinerary) {
+    trackEvent('download', { itinerary })
     initializeEventDownload(itinerary)
   }
 
@@ -110,7 +121,7 @@ export default function Home() {
             label="Date"
             type="date"
             name="date"
-            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}date`) || DateTime.local().toFormat('yyyy-MM-dd')}
+            defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}date`) || DateTime.local().toFormat('yyyy-MM-dd')}
           />
           <Spacer y={2} />
           <Input
@@ -118,7 +129,7 @@ export default function Home() {
             placeholder="count"
             label="Group Size"
             name="group-size"
-            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}group-size`) || undefined}
+            defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}group-size`) || undefined}
           />
           <Spacer />
           <Input
@@ -126,7 +137,7 @@ export default function Home() {
             placeholder="city"
             label="Location"
             name="location"
-            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}location`) || undefined}
+            defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}location`) || undefined}
           />
           <Spacer />
           <Textarea 
@@ -134,7 +145,7 @@ export default function Home() {
             label="Interests"
             aria-label="Interests"
             name="interests"
-            defaultValue={localStorage.getItem(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
+            defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
           />
           <Spacer />
           <Button color="primary" type="submit" size="lg">Submit</Button>
