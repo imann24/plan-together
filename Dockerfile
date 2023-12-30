@@ -18,6 +18,8 @@ RUN npm install -g yarn@$YARN_VERSION --force
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
+ARG NEXT_PUBLIC_MIXPANEL_TOKEN="5664f94b7a1e8fe59647f2998b7997e2"
+
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python3
