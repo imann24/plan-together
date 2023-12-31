@@ -1,6 +1,7 @@
 'use client'
 
-import React, { FormEvent, useState, useEffect } from 'react'
+import React, { FormEvent, useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import {
   Button,
@@ -30,8 +31,15 @@ export default function Home() {
   const [loadingAnswer, setLoadingAnswer] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [eventSaved, setEventSaved] = useState(false)
+  const [savingEvent, setSavingEvent] = useState(false)
+  const [formSubmitted, setFormSubmitted] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
+  const [showAccessibility, setShowAccessibility] = useState(false)
+  const [showBudget, setShowBudget] = useState(false)
+  const [showDistance, setShowDistance] = useState(false)
+  const [showTime, setShowTime] = useState(false)
   const { reset, register } = useForm()
+  const answerCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     trackPageView('Create')
@@ -49,6 +57,13 @@ export default function Home() {
     }
     setItinerary(savedItinerary)
   }, [])
+
+  useEffect(() => {
+    // we also load the itinerary from localStorage, don't need to scroll to it on initial load
+    if (formSubmitted) {
+      answerCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }
+  }, [itinerary])
 
   function safeLocalStorageGet(key: string) {
     if (typeof window !== 'undefined') {
@@ -76,6 +91,10 @@ export default function Home() {
     localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}group-size`))
     localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}location`))
     localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}interests`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}accessibility`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}budget`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}distance`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}time`))
     reset({
       date: DateTime.local().toFormat('yyyy-MM-dd'),
       'group-size': '',
@@ -93,6 +112,7 @@ export default function Home() {
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    setFormSubmitted(true)
     setItinerary(null)
     setLoadingAnswer(true)
     event.preventDefault()
@@ -118,9 +138,11 @@ export default function Home() {
     // ensure that this response is saved even if we reload the page:
     saveEventToLocalStorage(itinerary)
     setEventSaved(false)
+    console.log(answerCardRef)
   }
 
   async function onSave(itinerary: Itinerary): Promise<void> {
+    setSavingEvent(true)
     trackEvent('save', { itinerary })
     const response = await fetch('/api/supabase/events', {
       method: 'POST',
@@ -129,6 +151,7 @@ export default function Home() {
     const data = await response.json()
     // disables the Save button
     setEventSaved(data.saved)
+    setSavingEvent(false)
   }
 
   function downloadEvent(itinerary: Itinerary) {
@@ -140,6 +163,33 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 max-w-5xl w-full">
         <form onSubmit={onSubmit} onChange={saveFormToLocalStorage} className="max-w-4xl">
+          <ButtonGroup>
+            {!showAccessibility &&
+              <Button color="primary" size="sm" onClick={() => setShowAccessibility(true)}>
+                <Image src="/plus-icon.svg" alt="plus icon" width={18} height={18} />
+                Accessibility
+              </Button>
+            }
+            {!showBudget &&
+              <Button color="primary" size="sm" onClick={() => setShowBudget(true)}>
+                <Image src="/plus-icon.svg" alt="plus icon" width={18} height={18} />
+                Budget
+              </Button>
+            }
+            {!showDistance &&
+              <Button color="primary" size="sm" onClick={() => setShowDistance(true)}>
+                <Image src="/plus-icon.svg" alt="plus icon" width={18} height={18} />
+                Distance
+              </Button>            
+            }
+            {!showTime &&
+              <Button color="primary" size="sm" onClick={() => setShowTime(true)}>
+                <Image src="/plus-icon.svg" alt="plus icon" width={18} height={18} />
+                Time
+              </Button>
+            }
+          </ButtonGroup>
+          <Spacer y={2} />
           <Input
             label="Date"
             type="date"
@@ -171,7 +221,57 @@ export default function Home() {
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
           />
           <Spacer />
-          <Button color="primary" type="submit" size="lg">Submit</Button>
+          {showAccessibility &&
+            <>
+              <Textarea 
+                placeholder="describe needs"
+                label="Accessibility"
+                aria-label="Accessibility"
+                {...register('accessibility')}
+                defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}accessibility`) || undefined}
+              />
+              <Spacer />
+            </>
+          }
+          {showBudget &&
+            <>
+              <Input
+                placeholder="$ range"
+                label="Budget"
+                aria-label="Budget"
+                {...register('budget')}
+                defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}budget`) || '$'}
+              />
+              <Spacer />
+            </>
+          }
+          {showDistance &&
+            <>
+              <Input
+                type="number"
+                placeholder="miles"
+                label="Max Distance"
+                aria-label="Max Distance"
+                {...register('distance')}
+                defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}distance`) || undefined}
+              />
+              <Spacer />
+            </>
+          }
+          {showTime &&
+            <>
+              <Input 
+                type="number"
+                placeholder="hours"
+                label="Max Time"
+                aria-label="Max Time"
+                {...register('time')}
+                defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}time`) || undefined}
+              />
+              <Spacer />
+            </>
+          }
+          <Button color="primary" type="submit" size="lg" isLoading={loadingAnswer}>Submit</Button>
           <Button
               color="danger"
               type="reset"
@@ -224,6 +324,7 @@ export default function Home() {
                       to <b>Save</b> events
                     </i></p>
                   )}
+                  {/* these buttons are at the buttons of the info so scroll them into view */}
                   <ButtonGroup>
                     <Button
                       color="secondary"
@@ -237,6 +338,7 @@ export default function Home() {
                       variant="ghost"
                       onClick={() => onSave(itinerary)} 
                       isDisabled={!user || eventSaved}
+                      isLoading={savingEvent}
                     >
                       Save Event
                     </Button>
@@ -252,6 +354,8 @@ export default function Home() {
             </div>
           </CardBody>
         </Card>
+        {/* hack to scroll right to the bottom of the Itinerary Card */}
+        <div ref={answerCardRef} />
       </div>
     </main>
   )

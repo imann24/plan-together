@@ -21,6 +21,10 @@ const formatPrompt = (
     location: string,
     interests: string,
     date: string,
+    accessibility?: string,
+    budget?: string,
+    distance?: string,
+    time?: string,
 ): string => {
     return `
     Please plan a day of activities for a group and respond in the form a JSON object.
@@ -35,10 +39,14 @@ const formatPrompt = (
     }
 
     Use the following parameters to plan the day:
-        Group size: ${groupSize}
+        Group size: ${groupSize} people
         Location: ${location}
         Interests: ${interests}
         Date: ${date}
+        ${accessibility ? `Accessibility Needs: ${accessibility}` : ''}
+        ${budget ? `Budget: ${budget}` : ''}
+        ${distance ? `All locations should be within ${distance} miles of ${location}` : ''}
+        ${time ? `The total length of plans should be equal to or less than ${time} hours` : ''}
     `
 }
 
@@ -86,6 +94,10 @@ export async function POST(req: Request) {
     const location = body.get('location')
     const interests = body.get('interests')
     const date = body.get('date')
+    const accessibility = body.get('accessibility')
+    const budget = body.get('budget')
+    const distance = body.get('distance')
+    const time = body.get('time')
 
     const answer = await openai.chat.completions.create({
         // use 3.5 because it supports json_object response format
@@ -98,6 +110,10 @@ export async function POST(req: Request) {
                 location as string,
                 interests as string,
                 date as string,
+                accessibility as string,
+                budget as string,
+                distance as string,
+                time as string,
             )
         }],
     })
