@@ -159,17 +159,17 @@ export default function Home() {
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
           />
           <Spacer />
-          <ButtonGroup>
-            <Button color="primary" type="submit" size="lg">Submit</Button>
-            <Button
+          <Button color="primary" type="submit" size="lg">Submit</Button>
+          <Button
               color="danger"
               type="reset"
-              size="lg"
+              size="sm"
+              className="float-right mb-2"
               onClick={resetForm}
             >
               Clear
-            </Button>
-          </ButtonGroup>
+          </Button>
+
         </form>
         <Spacer y={5} />
         <Card className="itinerary" isBlurred>
