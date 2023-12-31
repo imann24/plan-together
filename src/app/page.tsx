@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FormEvent, useState, useEffect } from 'react'
+import React, { FormEvent, useState, useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import {
   Button,
@@ -16,7 +16,8 @@ import {
   Link,
 } from '@nextui-org/react'
 import { DateTime } from 'luxon'
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@auth0/nextjs-auth0/client'
+import { useForm } from 'react-hook-form'
 import { type Itinerary } from '@/lib/types'
 import { initializeEventDownload } from '@/lib/calendar'
 import { trackPageView, trackEvent } from '@/lib/mixpanel'
@@ -30,6 +31,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [eventSaved, setEventSaved] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const { reset } = useForm()
 
   useEffect(() => {
     trackPageView('Create')
@@ -67,6 +70,14 @@ export default function Home() {
       // hack with 'as any' to allow us to index through the object
       localStorage.setItem(`${LOCAL_STORAGE_PREFIX_ANSWER}${key}`, (itinerary as any)[key] as string)
     }
+  }
+
+  function resetForm() {
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}date`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}group-size`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}location`))
+    localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}interests`))
+    reset()
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -116,8 +127,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 max-w-5xl w-full">
-        <form onSubmit={onSubmit} onChange={saveFormToLocalStorage} className="max-w-4xl">
-          <Input 
+        <form onSubmit={onSubmit} onChange={saveFormToLocalStorage} className="max-w-4xl" ref={formRef}>
+          <Input
             label="Date"
             type="date"
             name="date"
@@ -148,7 +159,17 @@ export default function Home() {
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
           />
           <Spacer />
-          <Button color="primary" type="submit" size="lg">Submit</Button>
+          <ButtonGroup>
+            <Button color="primary" type="submit" size="lg">Submit</Button>
+            <Button
+              color="danger"
+              type="reset"
+              size="lg"
+              onClick={resetForm}
+            >
+              Clear
+            </Button>
+          </ButtonGroup>
         </form>
         <Spacer y={5} />
         <Card className="itinerary" isBlurred>
