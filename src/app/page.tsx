@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FormEvent, useState, useEffect, useRef } from 'react'
+import React, { FormEvent, useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import {
   Button,
@@ -31,8 +31,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [eventSaved, setEventSaved] = useState(false)
   const [itinerary, setItinerary] = useState<Itinerary | null>(null)
-  const formRef = useRef<HTMLFormElement>(null)
-  const { reset } = useForm()
+  const { reset, register } = useForm()
 
   useEffect(() => {
     trackPageView('Create')
@@ -77,7 +76,20 @@ export default function Home() {
     localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}group-size`))
     localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}location`))
     localStorage.removeItem((`${LOCAL_STORAGE_PREFIX_FORM}interests`))
-    reset()
+    reset({
+      date: DateTime.local().toFormat('yyyy-MM-dd'),
+      'group-size': '',
+      location: '',
+      interests: '',
+    }, {
+      keepValues: false,
+      keepDirty: false,
+      keepIsSubmitted: false,
+      keepTouched: false,
+      keepIsValid: false,
+      keepSubmitCount: false,
+      keepErrors: false,
+    })
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -127,11 +139,11 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className="z-10 max-w-5xl w-full">
-        <form onSubmit={onSubmit} onChange={saveFormToLocalStorage} className="max-w-4xl" ref={formRef}>
+        <form onSubmit={onSubmit} onChange={saveFormToLocalStorage} className="max-w-4xl">
           <Input
             label="Date"
             type="date"
-            name="date"
+            {...register('date')}
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}date`) || DateTime.local().toFormat('yyyy-MM-dd')}
           />
           <Spacer y={2} />
@@ -139,7 +151,7 @@ export default function Home() {
             type="number"
             placeholder="count"
             label="Group Size"
-            name="group-size"
+            {...register('group-size')}
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}group-size`) || undefined}
           />
           <Spacer />
@@ -147,7 +159,7 @@ export default function Home() {
             type="text"
             placeholder="city"
             label="Location"
-            name="location"
+            {...register('location')}
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}location`) || undefined}
           />
           <Spacer />
@@ -155,7 +167,7 @@ export default function Home() {
             placeholder="describe"
             label="Interests"
             aria-label="Interests"
-            name="interests"
+            {...register('interests')}
             defaultValue={safeLocalStorageGet(`${LOCAL_STORAGE_PREFIX_FORM}interests`) || undefined}
           />
           <Spacer />
