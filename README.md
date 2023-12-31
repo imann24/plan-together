@@ -30,9 +30,9 @@ An app for planning outtings for groups of friends
 - [ ] Cache responses
     - [ ] Especially Supabase results on pub share page
 - [x] Integrate with a database
-- [ ] Add additional + optional fields
-    - [ ] location radius on how far to search
-    - [ ] time window on how long/much time user wants to spend
+- [x] Add additional + optional fields
+    - [x] location radius on how far to search
+    - [x] time window on how long/much time user wants to spend
 - [ ] Improve the rendering of the itinerary/standardize format
 - [x] Support Setting an event date
 - [ ] Improve timezone logic
