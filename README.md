@@ -60,3 +60,4 @@ An app for planning outtings for groups of friends
 - [ ] Add a fuzzy string match check to see if Google Maps result is correct
 - [x] Create about page
 - [ ] After event has been saved on `Create` page, disable `Save` button on future reloads of page
+- [ ] Solve bug where user sets values on form, reloads page, `Clear` form button doesn't work
