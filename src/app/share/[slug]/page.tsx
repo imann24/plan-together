@@ -2,7 +2,6 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { SupabaseItinerary } from '@/lib/types'
 import EventCard from '@/lib/components/EventCard'
 import TrackPageLoad from '@/lib/components/TrackPageLoad'
-import { cacheGet, cacheSet } from '@/lib/cache'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,16 +12,7 @@ if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
     console.warn('share-page', 'SUPABASE_URL or SUPABASE_ANON_KEY not set. skipping initialization.')
 }
 
-function getShareKey(eventSlug: string): string {
-    return `PlanTogether-share-${eventSlug}`
-}
-
 async function getSharedEvent(eventSlug: string): Promise<SupabaseItinerary | null> {
-    const shareKey = getShareKey(eventSlug)
-    const cachedShare = await cacheGet(shareKey)
-    if (cachedShare) {
-        return JSON.parse(cachedShare) as SupabaseItinerary
-    }
     const { data: share, error } = await supabase
         .from('shares')
         .select('*')
@@ -43,7 +33,6 @@ async function getSharedEvent(eventSlug: string): Promise<SupabaseItinerary | nu
         return null
     }
 
-    await cacheSet(shareKey, JSON.stringify(event))
     return event
 }
 

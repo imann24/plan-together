@@ -20,7 +20,7 @@ export default async function SavedEvents() {
     return (
         <>
             <TrackPageLoad page="Saved" />
-            {events.map((evt: SupabaseItinerary, index: number) => (
+            {events?.map((evt: SupabaseItinerary, index: number) => (
                 <>
                     <EventCard key={index} event={evt} showShare />
                     <Spacer y={5} />
